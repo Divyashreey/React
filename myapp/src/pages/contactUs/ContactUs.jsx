@@ -1,10 +1,46 @@
-// ContactUs.js
-
-import React from 'react';
+import React, { useState } from 'react';
 import './contactUs.css'; // Import the stylesheet
+import emailjs from 'emailjs-com'; // Import EmailJS library
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 
 const ContactUs = () => {
+  // State to hold form data
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+
+  // Function to handle form field changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  // Function to handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Send email using EmailJS
+    emailjs.sendForm('service_6wde5dm', 'template_5zm7kko', e.target, 'HZWHMAGXrltuIc3-H')
+      .then((result) => {
+        console.log('Email sent successfully:', result.text);
+        // Reset the form after successful submission
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
+      }, (error) => {
+        console.error('Error sending email:', error);
+      });
+  };
+
   return (
     <Container className="mt-5">
       <Row>
@@ -17,7 +53,6 @@ const ContactUs = () => {
           />
         </Col>
         <Col md={6}>
-    
           <h1>Contact Us</h1>
           <p style={{color:"black"}}>
             We'd love to hear from you! Whether you have questions, feedback, or just want to say hello, feel free to
@@ -27,23 +62,52 @@ const ContactUs = () => {
             You can contact us via email at{' '}
             <a href="mailto:contact@destinationdiaries.com" style={{color:"#6A6C6D"}}>contact@destinationdiaries.com</a> or by filling out the form below.
           </p>
-
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formName">
               <Form.Label>Your Name</Form.Label>
-              <Form.Control type="text" placeholder="Enter your name..." />
+              <Form.Control
+                type="text"
+                placeholder="Enter your name..."
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
             </Form.Group>
-
             <Form.Group controlId="formEmail">
               <Form.Label>Your Email</Form.Label>
-              <Form.Control type="email" placeholder="Enter your email..." />
+              <Form.Control
+                type="email"
+                placeholder="Enter your email..."
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
             </Form.Group>
-
+            <Form.Group controlId="formSubject">
+              <Form.Label>Subject</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter subject..."
+                name="subject"
+                value={formData.subject}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
             <Form.Group controlId="formMessage">
               <Form.Label>Message</Form.Label>
-              <Form.Control as="textarea" rows={4} placeholder="Enter your message..." />
+              <Form.Control
+                as="textarea"
+                rows={4}
+                placeholder="Enter your message..."
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                required
+              />
             </Form.Group>
-
             <Button variant="primary" type="submit">
               Submit
             </Button>
