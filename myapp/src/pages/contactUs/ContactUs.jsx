@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import './contactUs.css'; // Import the stylesheet
-import emailjs from 'emailjs-com'; // Import EmailJS library
+import './contactUs.css'; 
+import emailjs from 'emailjs-com'; 
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 
 const ContactUs = () => {
-  // State to hold form data
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -12,7 +12,7 @@ const ContactUs = () => {
     message: ''
   });
 
-  // Function to handle form field changes
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -21,15 +21,15 @@ const ContactUs = () => {
     }));
   };
 
-  // Function to handle form submission
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Send email using EmailJS
+   
     emailjs.sendForm('service_6wde5dm', 'template_5zm7kko', e.target, 'HZWHMAGXrltuIc3-H')
       .then((result) => {
         console.log('Email sent successfully:', result.text);
-        // Reset the form after successful submission
+        
         setFormData({
           name: '',
           email: '',
